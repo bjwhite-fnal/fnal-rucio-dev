@@ -1,4 +1,4 @@
-version: "2"
+version: "3.7"
 services:
   rucio:
     image: rucio-dev
@@ -6,7 +6,6 @@ services:
     ports:
       - "443:443"
     links:
-      #- mysql:mysql
       - postgres:postgres
       - graphite:graphite
     volumes:
@@ -14,13 +13,11 @@ services:
       - ./rucio/bin:/opt/rucio/bin
       - ./rucio/lib:/opt/rucio/lib
     depends_on:
-      #- mysql
       - postgres
 
   rucio-client:
     image: rucio-client
     links:
-      #- mysql:mysql
       - postgres:postgres
     volumes:
       - ./rucio/tools:/opt/rucio/tools
@@ -30,13 +27,6 @@ services:
       - rucio
     environment:
       - RUCIO_ACCOUNT=root
-
-  #mysql:
-  #  image: mysql/mysql-server:5.7
-  #  environment:
-  #    - MYSQL_DATABASE=mysql
-  #    - MYSQL_USER=root
-  #    - MYSQL_PASSWORD=secret
 
   postgres:
     image: postgres
