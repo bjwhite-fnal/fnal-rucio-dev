@@ -1,0 +1,65 @@
+version: "2"
+services:
+  rucio:
+    image: rucio-dev
+    container_name: rucio-dev
+    ports:
+      - "443:443"
+    links:
+      #- mysql:mysql
+      - postgres:postgres
+      - graphite:graphite
+    volumes:
+      - ./rucio/tools:/opt/rucio/tools
+      - ./rucio/bin:/opt/rucio/bin
+      - ./rucio/lib:/opt/rucio/lib
+    depends_on:
+      #- mysql
+      - postgres
+
+  rucio-client:
+    image: rucio-client
+    links:
+      #- mysql:mysql
+      - postgres:postgres
+    volumes:
+      - ./rucio/tools:/opt/rucio/tools
+      - ./rucio/bin:/opt/rucio/bin
+      - ./rucio/lib:/opt/rucio/lib
+    depends_on:
+      - rucio
+    environment:
+      - RUCIO_ACCOUNT=root
+
+  #mysql:
+  #  image: mysql/mysql-server:5.7
+  #  environment:
+  #    - MYSQL_DATABASE=mysql
+  #    - MYSQL_USER=root
+  #    - MYSQL_PASSWORD=secret
+
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=secret
+
+  graphite:
+    image: graphiteapp/graphite-statsd
+    ports:
+      - "80:80"
+
+  storage_xrootd_0:
+    image: jimbat/fnal-xrootd
+    expose: 
+      - "1094"
+    environment:
+      - XROOTD_SITE_NAME=bjwhite_test_xrootd_standalone_0
+
+  storage_xrootd_1:
+    image: jimbat/fnal-xrootd
+    expose:
+      - "1094"
+    environment:
+      - XROOTD_SITE_NAME=bjwhite_test_xrootd_standalone_1

@@ -1,0 +1,19 @@
+
+FROM rucio/rucio-dev
+
+RUN yum install -y postgresql-devel
+
+RUN pip install --upgrade pip && \
+    pip install --upgrade setuptools && \
+    pip install boto3 psycopg2-binary
+
+# BJWHITE additions
+
+COPY rucio_init_db.sh $RUCIOHOME/rucio_init_db.sh
+COPY rucio_create_rses.sh $RUCIOHOME/rucio_create_rses.sh
+COPY wait-for-it.sh $RUCIOHOME/wait-for-it.sh
+RUN chmod +x $RUCIOHOME/rucio_init_db.sh && chmod +x $RUCIOHOME/rucio_create_rses.sh && chmod +x $RUCIOHOME/wait-for-it.sh
+COPY rucio.cfg_bjwhite $RUCIOHOME/etc/rucio.cfg
+COPY alembic.ini_bjwhite $RUCIOHOME/etc/alembic.ini
+
+CMD ["tail", "-f", "/dev/null"]
