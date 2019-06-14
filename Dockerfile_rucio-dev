@@ -1,14 +1,16 @@
 
 FROM rucio/rucio-dev
 
-RUN yum install -y postgresql-devel
+RUN yum install -y \
+    postgresql-devel
 
 RUN pip install --upgrade pip && \
     pip install --upgrade setuptools && \
     pip install boto3 psycopg2-binary
 
 # BJWHITE additions
-COPY rucio.cfg_bjwhite $RUCIOHOME/etc/rucio.cfg
+COPY rucio.conf_bjwhite /etc/httpd/conf.d/rucio.conf
+COPY rucio.cfg_bjwhite_x509 $RUCIOHOME/etc/rucio.cfg
 COPY alembic.ini_bjwhite $RUCIOHOME/etc/alembic.ini
 
 CMD ["httpd", "-D", "FOREGROUND"]

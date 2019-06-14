@@ -12,6 +12,7 @@ services:
       - ./rucio/tools:/opt/rucio/tools
       - ./rucio/bin:/opt/rucio/bin
       - ./rucio/lib:/opt/rucio/lib
+      - /etc/grid-security/certificates:/etc/grid-security/certificates
     depends_on:
       - postgres
 
@@ -23,10 +24,13 @@ services:
       - ./rucio/tools:/opt/rucio/tools
       - ./rucio/bin:/opt/rucio/bin
       - ./rucio/lib:/opt/rucio/lib
-    depends_on:
-      - rucio
+      - /etc/grid-security/certificates:/etc/grid-security/certificates
+      - /tmp/x509up_u51660:/tmp/x509up_u51660
     environment:
       - RUCIO_ACCOUNT=root
+      - X509_USER_PROXY=/tmp/x509up_u51660
+    depends_on:
+      - rucio
 
   postgres:
     image: postgres

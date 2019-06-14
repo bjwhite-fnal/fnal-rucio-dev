@@ -4,31 +4,29 @@ loglevel = DEBUG
 mailtemplatedir=/opt/rucio/etc/mail_templates
 
 # ORIGINAL
-[client]
-rucio_host = https://rucio-dev:443
-auth_host = https://rucio-dev:443
-auth_type = userpass
-username = ddmlab
-password = secret
-ca_cert = /opt/rucio/etc/web/ca.crt
-client_cert = /opt/rucio/etc/web/client.crt
-client_key = /opt/rucio/etc/web/client.key
-client_x509_proxy = $X509_USER_PROXY
-account = root
-request_retries = 3
-
-# BJWHITE TESTING
 #[client]
 #rucio_host = https://rucio-dev:443
 #auth_host = https://rucio-dev:443
-#auth_type = x509_proxy
-##ca_cert = /opt/rucio/etc/web/ca.crt
-##ca_cert = /etc/grid-security/certificates
+#auth_type = userpass
+#username = ddmlab
+#password = secret
+#ca_cert = /opt/rucio/etc/web/ca.crt
+#client_cert = /opt/rucio/etc/web/client.crt
+#client_key = /opt/rucio/etc/web/client.key
+#client_x509_proxy = $X509_USER_PROXY
 #account = root
 #request_retries = 3
 
+# BJWHITE TESTING
+[client]
+rucio_host = https://rucio-dev:443
+auth_host = https://rucio-dev:443
+auth_type = x509_proxy
+ca_cert = /etc/grid-security/certificates
+account = root
+request_retries = 3
+
 [database]
-# default = mysql://root:secret@mysql/mysql
 default = postgresql://root:secret@postgres/postgres
 pool_recycle=3600
 echo=0
@@ -41,8 +39,12 @@ userpass_pwd = 2ccee6f6dd1bc2269cddd7cd5e47578e98e430539807c36df23fab7dd13e7583
 userpass_email = ph-adp-ddm-lab@cern.ch
 
 # Default DDMLAB client certificate from /opt/rucio/etc/web/client.crt
-x509_identity = /C=CH/ST=Geneva/O=CERN/OU=PH-ADP-CO/CN=DDMLAB Client Certificate/emailAddress=ph-adp-ddm-lab@cern.ch
-x509_email = ph-adp-ddm-lab@cern.ch
+# x509_identity = /C=CH/ST=Geneva/O=CERN/OU=PH-ADP-CO/CN=DDMLAB Client Certificate/emailAddress=ph-adp-ddm-lab@cern.ch
+# x509_email = ph-adp-ddm-lab@cern.ch
+
+# DDMLAB client certificate using BJWHITE certificate
+x509_identity = /DC=org/DC=cilogon/C=US/O=Fermi National Accelerator Laboratory/OU=People/CN=Brandon White/CN=UID:bjwhite
+x509_email = bjwhite@fnal.gov 
 
 # Default DDMLAB cern account
 gss_identity = ddmlab@CERN.CH
