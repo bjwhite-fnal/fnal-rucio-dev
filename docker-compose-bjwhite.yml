@@ -15,6 +15,7 @@ services:
       - /etc/grid-security/certificates:/etc/grid-security/certificates
     depends_on:
       - postgres
+      - memcached
 
   rucio-client:
     image: rucio-client
@@ -57,3 +58,9 @@ services:
       - "1094"
     environment:
       - XROOTD_SITE_NAME=bjwhite_test_xrootd_standalone_1
+
+  memcached:
+    image: memcached:latest
+    environment: 
+      - MEMCACHED_HOST=memcached
+      - MEMCACHED_PORT=11211
