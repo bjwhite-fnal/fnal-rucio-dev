@@ -19,7 +19,6 @@ Listen 443
  SSLEngine on
  SSLCertificateFile /etc/grid-security/hostcert.pem
  SSLCertificateKeyFile /etc/grid-security/hostkey.pem
- #SSLCACertificateFile /opt/rucio/etc/web/ca.crt
  SSLCACertificatePath /etc/grid-security/certificates
  SSLCARevocationPath /etc/grid-security/certificates
  SSLVerifyClient optional
