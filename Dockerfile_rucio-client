@@ -9,22 +9,25 @@ RUN pip install --upgrade pip && \
 
 # BJWHITE additions
 
-COPY alembic.ini_bjwhite $RUCIOHOME/etc/alembic.ini
-COPY rucio_create_bjwhite.sh $RUCIOHOME/rucio_create_bjwhite.sh
-COPY rucio_init_db.sh $RUCIOHOME/rucio_init_db.sh
-COPY rucio_create_rses.sh $RUCIOHOME/rucio_create_rses.sh
-COPY wait-for-it.sh $RUCIOHOME/wait-for-it.sh
+ADD alembic.ini_bjwhite $RUCIOHOME/etc/alembic.ini
+ADD rucio_create_bjwhite.sh $RUCIOHOME/rucio_create_bjwhite.sh
+ADD rucio_init_db.sh $RUCIOHOME/rucio_init_db.sh
+ADD rucio_create_rses.sh $RUCIOHOME/rucio_create_rses.sh
+ADD wait-for-it.sh $RUCIOHOME/wait-for-it.sh
 RUN chmod +x $RUCIOHOME/rucio_init_db.sh && \
     chmod +x $RUCIOHOME/rucio_create_rses.sh && \
     chmod +x $RUCIOHOME/wait-for-it.sh && \
     chmod +x $RUCIOHOME/rucio_create_bjwhite.sh
 
 # Rucio Config with X509 Auth
-COPY rucio.cfg_bjwhite_x509 $RUCIOHOME/etc/rucio.cfg
+ADD rucio.cfg_bjwhite_x509 $RUCIOHOME/etc/rucio.cfg
 
 # Volume mounting at runtime would stomp this file, so add it to RUCIOHOME in order
 #   to copy it into the code directory when rucio_init_db.sh is run
-COPY util.py_bjwhite $RUCIOHOME/util.py
+ADD util.py_bjwhite $RUCIOHOME/util.py
+
+
+VOLUME /tmp/x509up_u51660:/tmp/x509up_u51660
 
 # Patches
 ADD patches/* /tmp/patches/
