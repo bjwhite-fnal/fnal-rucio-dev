@@ -5,7 +5,8 @@ RUN yum install -y postgresql-devel patch
 
 RUN pip install --upgrade pip && \
     pip install --upgrade setuptools && \
-    pip install boto3 psycopg2-binary
+    pip install boto3 psycopg2-binary && \
+    pip install remote-pdb
 
 # BJWHITE additions
 COPY rucio.conf_bjwhite /etc/httpd/conf.d/rucio.conf
@@ -15,5 +16,8 @@ COPY alembic.ini_bjwhite $RUCIOHOME/etc/alembic.ini
 # Patches
 ADD patches/* /tmp/patches/
 RUN if ls -1 /tmp/patches/ | grep -Eq '\.patch$'; then for p in /tmp/patches/*.patch; do echo "Patching: $p" && patch -p0 -d /usr/lib/python2.7/site-packages/ < $p; done; fi
+
+# Debugging Port for Remote PDB
+EXPOSE 4444
 
 CMD ["httpd", "-D", "FOREGROUND"]

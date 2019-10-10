@@ -5,6 +5,8 @@ services:
     container_name: rucio-dev
     ports:
       - "443:443"
+      # Remote Pdb port 
+      - "4444:4444"
     links:
       - postgres:postgres
       - graphite:graphite
@@ -16,6 +18,9 @@ services:
     depends_on:
       - postgres
       - memcached
+    # Required for Remote Pdb
+    stdin_open: true
+    tty: true
 
   rucio-client:
     image: rucio-client
